@@ -1,13 +1,15 @@
 //import Image from "next/image";
 import Link from "next/link";
-import ProductCard from "./components/ProductCard/ProductCard";
+
 
 export default function Home() {
   return (
     <main>
-      <h1>Hello world!</h1>
-      <Link href="/users">users</Link>
-      <ProductCard></ProductCard>
+      <h1>Main Client Page is here</h1>
+      <Link href={"/adoption"}>Adoption</Link>
+      <Link href={"/bringin"}>Bring in</Link>
+      <Link href={"/walk"}>Walk</Link>
+      <Link href={"/camp"}>Camp</Link>
     </main>
   )
 }
