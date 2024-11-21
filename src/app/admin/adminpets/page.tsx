@@ -4,7 +4,7 @@ import { DataTable } from "../../../components/data-table"
 async function getData(): Promise<Pet[]> {
   // Fetch data from your API here.
   const res = await fetch(
-    'https://localhost:7245/api/pets/getallpets', 
+    'https://localhost:7245/api/pets/getallpetswithadditionaldata', 
     { next: { revalidate: 10 } });
   const data = await res.json();
   return data;
