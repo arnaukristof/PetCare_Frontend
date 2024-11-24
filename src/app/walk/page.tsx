@@ -1,51 +1,55 @@
 "use client"
 
-import * as React from "react"
-import { format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
+import React, { useState, useEffect } from "react";
+import { Calendar } from "@/components/ui/calendar"; // Feltételezve, hogy van ilyen útvonal
+// import { addDays, setDay, startOfWeek } from "date-fns";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+const AvailableDaysCalendar = ({ petTypeId }: { petTypeId: number }) => {
+  const [availableDays, setAvailableDays] = useState<number[]>([]);
 
-export default function Walk() {
-  const [date, setDate] = React.useState<Date>()
-  console.log(date);
+  // API hívás az elérhető napok lekérdezésére
+  useEffect(() => {
+    const fetchAvailableDays = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5290/api/AvailableDays?petTypeId=3`
+        );
+        if (response.ok) {
+          const days = await response.json();
+          const daysMap: { [key: string]: number } = {
+            Sunday: 0,
+            Monday: 1,
+            Tuesday: 2,
+            Wednesday: 3,
+            Thursday: 4,
+            Friday: 5,
+            Saturday: 6,
+          };
+          setAvailableDays(days.map((day: string) => daysMap[day]));
+        } else {
+          console.error("Failed to fetch available days");
+        }
+      } catch (error) {
+        console.error("Error fetching available days:", error);
+      }
+    };
+
+    fetchAvailableDays();
+  }, [petTypeId]);
+
+  // Ellenőrzés, hogy az adott nap engedélyezett-e
+  const isDayEnabled = (date: Date) => {
+    const dayNumber = date.getDay();
+    return availableDays.includes(dayNumber);
+  };
 
   return (
-    <div className="container mx-auto py-10 m-20">
-      <h1>Walk</h1>
-      <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant={"outline"}
-          className={cn(
-            "w-[280px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
-          )}
-        >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          disabled={date => date < new Date()}
-          initialFocus
-        />
-      </PopoverContent>
-    </Popover>
-    </div>
-  )
-}
+    <Calendar
+      mode="single"
+      // Csak az elérhető napok aktívak
+      disabled={(date) => !isDayEnabled(date)}
+    />
+  );
+};
 
-
-
+export default AvailableDaysCalendar;

@@ -5,6 +5,7 @@ import { DataTable } from "../../../components/data-table"
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { EditDialog } from "./EditDialog";
+import Link from "next/link";
 
 // async function getData(): Promise<Pet[]> {
 //   // Fetch data from your API here.
@@ -54,17 +55,20 @@ export default  function Pets() {
     fetchPetBreeds();
   }, []);
 
-  const handleSave = async (newPet: Pet) => {
+  const handleNewPetSave = async (newPet: Pet) => {
     try {
-      await fetch("http://localhost:5290/api/Pets/AddPet", {
+      const res = await fetch("http://localhost:5290/api/Pets/AddPet", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newPet),
       });
-      console.log("New pet added:", newPet);
+      if (!res.ok) throw new Error("Failed to save the new Pet.");
+      console.log("New pet added", newPet);
+
+      setPets((prevPets) => [...prevPets, newPet]);
     } catch (error) {
       console.error("Error adding new pet:", error);
-    } finally {
+    }finally{
       setNewPetDialogOpen(false);
     }
   };
@@ -77,18 +81,35 @@ export default  function Pets() {
       <Button onClick={() => setNewPetDialogOpen(true)} className="mb-4">
         Add New Pet
       </Button>
+      <Button className="m-4">
+        <Link href="/admin/adminpets/petpictures" >Add Pet Pictures</Link>
+      </Button>
 
       <DataTable columns={columns} data={pets} />
 
       {/* Az új pet felvételéhez szükséges dialógus */}
       {newPetDialogOpen && (
         <EditDialog
-          pet={null} // Új pet esetén nincs előre kitöltött adat
+          pet={{
+            id: 0, // Új pethez ideiglenes ID
+            name: "",
+            age: 0,
+            petSizeId: 0,
+            petSize: { id: 0, sizeName: "" },
+            petTypeId: 0,
+            petType: { id: 0, typeName: "" },
+            petBreedId: 0,
+            petBreed: { id: 0, breedName: "" },
+            medication: false,
+            indoor: false,
+            description: "",
+            verified: false,
+          }} // Új pet esetén nincs előre kitöltött adat
           petSizes={petSizes}
           petTypes={petTypes}
           petBreeds={petBreeds}
           onClose={() => setNewPetDialogOpen(false)}
-          onSave={handleSave}  // Az új pet mentéséhez használt callback
+          onSave={handleNewPetSave}  // Az új pet mentéséhez használt callback
         />
       )}
     </div>

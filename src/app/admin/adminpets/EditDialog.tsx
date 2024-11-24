@@ -21,6 +21,22 @@ export function EditDialog({ pet, petSizes, petTypes, petBreeds, onClose, onSave
   useEffect(() => {
     if (pet) {
       setFormData(pet); // Frissítjük a formData-t, amikor a pet változik
+    } else {
+      setFormData({
+        id: 0, // Új pethez ideiglenes ID
+        name: "",
+        age: 0,
+        petSizeId: 0,
+        petSize: { id: 0, sizeName: "" },
+        petTypeId: 0,
+        petType: { id: 0, typeName: "" },
+        petBreedId: 0,
+        petBreed: { id: 0, breedName: "" },
+        medication: false,
+        indoor: false,
+        description: "",
+        verified: false,
+      });
     }
   }, [pet]);
 
