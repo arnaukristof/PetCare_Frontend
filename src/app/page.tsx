@@ -1,14 +1,13 @@
 //import Image from "next/image";
-import Link from "next/link";
+// import { NavigationMenu, NavigationMenuLink, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
+// import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+
+
   return (
-    <main>
-      <h1>Main Client Page is here</h1>
-      <Link href={"/adoption"}>Adoption</Link>
-      <Link href={"/bringin"}>Bring in</Link>
-      <Link href={"/walk"}>Walk</Link>
-      <Link href={"/camp"}>Camp</Link>
-    </main>
+    <div className="container mt-10 mx-auto py-10">
+      <h1>Welcome to PetCare!</h1>
+    </div>
   )
 }
