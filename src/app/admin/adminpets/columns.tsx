@@ -3,18 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import {  ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuLabel,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu"
-// import { useState } from "react";
 import { ActionsCell } from "./ActionsCell";
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type Pet = {
   id: number;
   name: string;
@@ -102,6 +91,6 @@ export const columns: ColumnDef<Pet>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <ActionsCell pet={row.original} />, // Használjuk az új komponenst
+    cell: ({ row }) => <ActionsCell pet={row.original} />,
   }
 ]

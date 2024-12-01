@@ -6,19 +6,11 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { EditDialog } from "./EditDialog";
 import Link from "next/link";
-
-// async function getData(): Promise<Pet[]> {
-//   // Fetch data from your API here.
-//   const res = await fetch(
-//     'http://localhost:5290/api/Pets/GetAllPetswithadditionaldata', 
-//     { next: { revalidate: 10 } });
-//   const data = await res.json();
-//   return data;
-// }
+import ProtectedRoute from '@/components/custom/ProtectedRoute'
 
 export default  function Pets() {
 
-  const [newPetDialogOpen, setNewPetDialogOpen] = useState(false);  // Új állapot hozzáadása az új pet dialógushoz
+  const [newPetDialogOpen, setNewPetDialogOpen] = useState(false);
   const [petSizes, setPetSizes] = useState<{ id: number; sizeName: string  }[]>([]);
   const [petTypes, setPetTypes] = useState<{ id: number; typeName: string  }[]>([]);
   const [petBreeds, setPetBreeds] = useState<{ id: number; breedName: string  }[]>([]);
@@ -28,7 +20,7 @@ export default  function Pets() {
     const fetchData = async () => {
       const petRes = await fetch('http://localhost:5290/api/Pets/GetAllPetswithadditionaldata');
       const petData = await petRes.json();
-      setPets(petData);  // A peteket ide állítjuk be
+      setPets(petData);
     };
 
     const fetchPetSizes = async () => {
@@ -74,10 +66,10 @@ export default  function Pets() {
   };
 
   return (
+    <>
+    <ProtectedRoute>
     <div className="container mx-auto py-10">
       <h1>All Pets</h1>
-
-      {/* Gomb hozzáadása az új pet felvételéhez */}
       <Button onClick={() => setNewPetDialogOpen(true)} className="mb-4">
         Add New Pet
       </Button>
@@ -87,31 +79,32 @@ export default  function Pets() {
 
       <DataTable columns={columns} data={pets} />
 
-      {/* Az új pet felvételéhez szükséges dialógus */}
       {newPetDialogOpen && (
         <EditDialog
-          pet={{
-            id: 0, // Új pethez ideiglenes ID
-            name: "",
-            age: 0,
-            petSizeId: 0,
-            petSize: { id: 0, sizeName: "" },
-            petTypeId: 0,
-            petType: { id: 0, typeName: "" },
-            petBreedId: 0,
-            petBreed: { id: 0, breedName: "" },
-            medication: false,
+        pet={{
+          id: 0, 
+          name: "",
+          age: 0,
+          petSizeId: 0,
+          petSize: { id: 0, sizeName: "" },
+          petTypeId: 0,
+          petType: { id: 0, typeName: "" },
+          petBreedId: 0,
+          petBreed: { id: 0, breedName: "" },
+          medication: false,
             indoor: false,
             description: "",
             verified: false,
-          }} // Új pet esetén nincs előre kitöltött adat
+          }}
           petSizes={petSizes}
           petTypes={petTypes}
           petBreeds={petBreeds}
           onClose={() => setNewPetDialogOpen(false)}
-          onSave={handleNewPetSave}  // Az új pet mentéséhez használt callback
-        />
-      )}
+          onSave={handleNewPetSave}
+          />
+        )}
     </div>
+    </ProtectedRoute>
+    </>
   )
 }

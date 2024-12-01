@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-import { EditDialog } from "./EditDialog"; // Importáld az EditDialog-ot
+import { EditDialog } from "./EditDialog";
 import { Pet } from "./columns";
 
 type ActionsCellProps = {
@@ -16,7 +16,7 @@ export function ActionsCell({ pet }: ActionsCellProps) {
   const [petBreeds, setPetBreeds] = useState<{ id: number; breedName: string  }[]>([]);
 
   useEffect(() => {
-    // Fetch pet sizes from the API
+
     const fetchPetSizes = async () => {
       try {
         const res = await fetch("http://localhost:5290/api/PetElements/GetPetSizes");
@@ -27,7 +27,6 @@ export function ActionsCell({ pet }: ActionsCellProps) {
       }
     };
 
-    // Fetch pet types from the API
     const fetchPetTypes = async () => {
       try {
         const res = await fetch("http://localhost:5290/api/PetElements/GetPetTypes");
@@ -38,7 +37,6 @@ export function ActionsCell({ pet }: ActionsCellProps) {
       }
     };
 
-    // Fetch pet breeds from the API
     const fetchPetBreeds = async () => {
       try {
         const res = await fetch("http://localhost:5290/api/PetElements/GetPetBreeds");

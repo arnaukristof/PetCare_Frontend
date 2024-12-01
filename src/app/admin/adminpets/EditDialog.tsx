@@ -3,6 +3,7 @@
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { useState, useEffect } from "react";
 import { Pet } from "./columns";
 
@@ -20,10 +21,10 @@ export function EditDialog({ pet, petSizes, petTypes, petBreeds, onClose, onSave
 
   useEffect(() => {
     if (pet) {
-      setFormData(pet); // Frissítjük a formData-t, amikor a pet változik
+      setFormData(pet);
     } else {
       setFormData({
-        id: 0, // Új pethez ideiglenes ID
+        id: 0,
         name: "",
         age: 0,
         petSizeId: 0,
@@ -44,6 +45,12 @@ export function EditDialog({ pet, petSizes, petTypes, petBreeds, onClose, onSave
     const { name, value } = e.target;
     if (formData) {
       setFormData({ ...formData, [name]: ["petSizeId", "petTypeId", "petBreedId"].includes(name) ? parseInt(value) : value });
+    }
+  };
+
+  const handleSwitchChange = (name: keyof Pet) => (value: boolean) => {
+    if (formData) {
+      setFormData({ ...formData, [name]: value });
     }
   };
 
@@ -162,6 +169,33 @@ export function EditDialog({ pet, petSizes, petTypes, petBreeds, onClose, onSave
               onChange={handleChange}
               placeholder="Description"
             />
+          </div>
+          <div>
+            <label htmlFor="indoor" className="flex items-center space-x-2">
+              <span>Indoor</span>
+              <Switch
+                checked={formData?.indoor || false}
+                onCheckedChange={handleSwitchChange("indoor")}
+              />
+            </label>
+          </div>
+          <div>
+            <label htmlFor="medication" className="flex items-center space-x-2">
+              <span>Medication</span>
+              <Switch
+                checked={formData?.medication || false}
+                onCheckedChange={handleSwitchChange("medication")}
+              />
+            </label>
+          </div>
+          <div>
+            <label htmlFor="verified" className="flex items-center space-x-2">
+              <span>Verified</span>
+              <Switch
+                checked={formData?.verified || false}
+                onCheckedChange={handleSwitchChange("verified")}
+              />
+            </label>
           </div>
         </div>
         <DialogFooter>

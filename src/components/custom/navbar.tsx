@@ -12,10 +12,9 @@ const Navbar = () => {
   const isAdmin = pathname.startsWith("/admin");
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50 mb-10">
+    <nav className="fixed top-0 left-0 w-full bg-blue-500 shadow-md z-50 mb-10">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          {/* Logo */}
           <Link href="/" passHref>
               <Image
                 src={logo}
@@ -24,13 +23,11 @@ const Navbar = () => {
                 alt=""
               />
           </Link>
-
-          {/* Navigation Menu */}
           <NavigationMenu className="container mx-auto py-2">
             <NavigationMenuList>
               {isAdmin ? (
                 <>
-                <NavigationMenuItem>
+                <NavigationMenuItem >
                   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                     <Link href="/admin/adminworkers">             
                         Workers
@@ -48,6 +45,13 @@ const Navbar = () => {
                   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                     <Link href="/admin/adminschedules">
                         Schedules
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                    <Link href="/logout">
+                        Logout
                     </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>

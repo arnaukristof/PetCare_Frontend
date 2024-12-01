@@ -1,5 +1,7 @@
 'use client'
 
+import ProtectedRoute from "@/components/custom/ProtectedRoute"
+import { Button } from "@/components/ui/button"
 import React, { useState, useEffect } from "react"
 
 type Pet = {
@@ -9,15 +11,14 @@ type Pet = {
 
 export default function UploadImagePage() {
   const [file, setFile] = useState<File | undefined>(undefined)
-  const [petId, setPetId] = useState<string | undefined>(undefined) // Kiválasztott állat ID-ja
-  const [pets, setPets] = useState<Pet[]>([]) // Állatok listája
+  const [petId, setPetId] = useState<string | undefined>(undefined)
+  const [pets, setPets] = useState<Pet[]>([])
   const [uploadStatus, setUploadStatus] = useState<string | null>(null)
 
-  // Állatok adatainak lekérése
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const res = await fetch("http://localhost:5290/api/Pets/GetAllPets") // Végpont az állatok lekéréséhez
+        const res = await fetch("http://localhost:5290/api/Pets/GetAllPets")
         if (!res.ok) throw new Error("Failed to fetch pets.")
         const data: Pet[] = await res.json()
         setPets(data)
@@ -29,7 +30,6 @@ export default function UploadImagePage() {
     fetchPets()
   }, [])
 
-  // Feltöltési esemény kezelése
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -53,7 +53,7 @@ export default function UploadImagePage() {
       }
 
       setUploadStatus("Image uploaded successfully!")
-      setFile(undefined) // Reseteljük a fájl kiválasztást
+      setFile(undefined)
     } catch (error) {
       console.error("Upload failed:", error)
       setUploadStatus(error instanceof Error ? error.message : "An unknown error occurred.")
@@ -61,12 +61,11 @@ export default function UploadImagePage() {
   }
 
   return (
+    <ProtectedRoute>
     <main className="container mx-auto py-10">
       <h1 className="text-2xl font-bold mb-6">Upload Image for Pet</h1>
 
-      {/* Feltöltési űrlap */}
       <form onSubmit={onSubmit} className="space-y-4">
-        {/* Legördülő lista az állatok nevével */}
         <div>
           <label htmlFor="petId" className="block text-sm font-medium text-gray-700">Select Pet:</label>
           <select
@@ -90,24 +89,22 @@ export default function UploadImagePage() {
             type="file"
             id="file"
             onChange={(e) => setFile(e.target.files?.[0] ?? undefined)}
-            className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none"
           />
         </div>
 
-        <button
+        <Button
           type="submit"
-          className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Upload
-        </button>
+        </Button>
       </form>
 
-      {/* Feltöltési állapot */}
       {uploadStatus && (
         <p className={`mt-4 text-sm ${uploadStatus.includes("successfully") ? "text-green-600" : "text-red-600"}`}>
           {uploadStatus}
         </p>
       )}
     </main>
+    </ProtectedRoute>
   )
 }
