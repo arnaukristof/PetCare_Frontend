@@ -67,11 +67,6 @@ body {
   }
 }
 
-.Calendar
-{
-  align-content: center
-}
-
 @layer base {
   * {
     @apply border-border;

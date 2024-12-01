@@ -216,10 +216,10 @@ export default function Adoption() {
       try {
         const fetchedPets = await getPets()
 
-        const unverifiedPets = fetchedPets.filter((pet) => !pet.verified)
+        const verifiedPets = fetchedPets.filter((pet) => pet.verified)
 
         const petsWithImages = await Promise.all(
-          unverifiedPets.map(async (pet) => {
+          verifiedPets.map(async (pet) => {
             const image = await getFirstImageByPetId(pet.id)
             return { ...pet, imageUrl: image?.imageUrl || null }
           })

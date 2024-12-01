@@ -185,7 +185,9 @@ export default function AddPet() {
 
   return (
     <div className="px-40 mt-5 mx-20 space-y-6">
-      <h1 className="text-2xl font-bold mb-5">Add a New Pet</h1>
+      <h1 className="text-2xl font-bold mb-5">Bring in a pet</h1>
+      <p>Thank you for considering a thoughtful future for your beloved pet. We understand that this decision is never easy, but we’re here to help you find the perfect new home for them. Here, you can safely and securely give your furry friend a chance to meet a loving new family.</p>
+      <p>Fill the form with your pet's and personal data, and book an appointment to meet us!</p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <h2 className="text-xl font-semibold">Pet Information</h2>

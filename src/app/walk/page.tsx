@@ -169,6 +169,7 @@ const ScheduleForm = () => {
   return (
     <div className="px-40 mt-5 mx-20 space-y-6">
       <h1 className="text-xl font-bold">Schedule Walking</h1>
+      <p>Welcome on the walking page where you can book an appointment to walk with a randomly selected dog. By going on a walk you can have a little exercise, while making a pets life happier!</p>
       <Calendar
         mode="single"
         selected={selectedDate}
